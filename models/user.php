@@ -1,16 +1,29 @@
 <?php
-Class User {
-    private $name;
-    private $email;
-    private $password;
-    private $create_date;
 
+/**
+ * Class User
+ */
+Class User {
+    /**
+     * @var string user name of this user
+     */
+    private $name;
+    /**
+     * @var string email of this user
+     */
+    private $email;
+    /**
+     * @var string hashed password of this user
+     */
+    private $password;
+    /**
+     * @var string the created date of this user
+     */
+    private $create_date;
     //user profile image url
     //private $image;
-
     //user's video urls
     //private $videos;
-
 
     /**
      * constructor, don't do much, may need improve.
@@ -72,21 +85,21 @@ Class User {
         $this->email = $email;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param mixed $image
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getImage()
+//    {
+//        return $this->image;
+//    }
+//
+//    /**
+//     * @param mixed $image
+//     */
+//    public function setImage($image)
+//    {
+//        $this->image = $image;
+//    }
 
     /**
      * @return mixed
@@ -120,20 +133,20 @@ Class User {
         $this->password = $password;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getVideos()
-    {
-        return $this->videos;
-    }
-
-    /**
-     * @param mixed $videos
-     */
-    public function setVideos($videos)
-    {
-        $this->videos = $videos;
-    }
+//    /**
+//     * @return mixed
+//     */
+//    public function getVideos()
+//    {
+//        return $this->videos;
+//    }
+//
+//    /**
+//     * @param mixed $videos
+//     */
+//    public function setVideos($videos)
+//    {
+//        $this->videos = $videos;
+//    }
 }
 ?>

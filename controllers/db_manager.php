@@ -1,12 +1,23 @@
 <?php
-
 include '../models/user.php';
 
+/**
+ * Class DB_manager
+ */
 class DB_manager
 {
+    /**
+     * @var mysqli is a database connection of this manager
+     */
     private $db;
+    /**
+     * @var string path to the configuration file
+     */
     private $configuration_file_path = "../php.ini";
 
+    /**
+     * constructor of db_manager which will make a connection to the database automatically
+     */
     function DB_manager (){
         //parse configuration file
         $ini_array = parse_ini_file($this->configuration_file_path);
@@ -25,6 +36,11 @@ class DB_manager
         $this->db = $mysqli;
     }
 
+    /**
+     * runs query to get a user from user table in database
+     * @param $var array {"name" => "user_name"}
+     * @return bool|User
+     */
     public function get_a_user ($var) {
         $name = $var['name'];
         $user = new User();
@@ -36,7 +52,6 @@ class DB_manager
             $stmt->execute();
             $stmt->bind_result($email, $password, $create_date);
             $stmt->fetch();
-
             //set attributes to user
             $user->set_attributes(
                 array(
@@ -46,7 +61,6 @@ class DB_manager
                     "create_date" => $create_date
                 )
             );
-
             $stmt->close();
         } else {
             echo "get_a_user: select statement went wrong";
@@ -55,6 +69,10 @@ class DB_manager
         return $user;
     }
 
+    /**
+     * stores a new user into database user table
+     * @param $var array {"name" => "?", "email" => "?", "password" => "?"}
+     */
     public function create_a_user ($var) {
         $name = $var['name'];
         $email = $var['email'];

@@ -39,7 +39,6 @@ class test_db_manager extends PHPUnit_Framework_TestCase {
             "password" => "david1"
         );
 
-
         $db->create_a_user($var);
         $this->assertEquals("please check database to see if david has been inserted","please check database to see if david has been inserted");
     }
