@@ -1,11 +1,28 @@
 <!DOCTYPE HTML>
 <html>
 <?php
-    if (isset($_POST['submit'])) {
-        $name = $_POST["username"];
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+include('../controllers/server.php');
+if (isset($_POST['submit'])) {
+    $name = $_POST["username"];
+    $email = $_POST["email"];
+    $password = $_POST["password"];
+
+    $user = array(
+        'name' => $_POST["username"],
+        'password' => $_POST["password"]
+    );
+
+    $sign_in_result = Server::sign_in($user);
+
+    if($sign_in_result == true){
+        echo "<script type='text/javascript'>alert('Sign in succeed!!!!')</script>";
+        header("Location: test.html");
     }
+    else{
+        echo "<script type='text/javascript'>alert('Sign in failed!!!!')</script>";
+    }
+
+}
 ?>
 <head>
     <title>Sign Up</title>
@@ -36,15 +53,13 @@
         <p>Please enter your information down here to sign in</p>
     </header>
     <div class="container">
-        <form id="form" method="post" action="sign_up.php" >
+        <form id="form" method="post" action="sign_in.php" >
             <section>
                 <h2>Username</h2>
                 <p> <input type="text" id="user" name="username" placeholder="Username" /> </p>
                 <h2>Password</h2>
-                <p><input type="email" id="email" name="email" placeholder="Password" /></p>
-                <ul class="actions">
-                    <li><a href="test.html" class="button big special" name="submit" type="submit">Sign In</a></li>
-                </ul>
+                <p><input type="password" id="password" name="password" placeholder="Password" /></p>
+                <button class="button big special" name="submit" type="submit">Sign Up</button>
             </section>
         </form>
     </div>

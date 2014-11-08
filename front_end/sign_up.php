@@ -1,12 +1,41 @@
 <!DOCTYPE HTML>
 <html>
 <?php
-    if (isset($_POST['submit'])) {
-        echo "inside";
-        $name = $_POST["username"];
-        $email = $_POST["email"];
-        $password = $_POST["password"];
+include("../controllers/server.php");
+if (isset($_POST['submit'])) {
+//        $required_field = array("email", "username","password");
+//        validate_presences($required_field);
+//
+//        $fields_with_max_lengths = array("username" => 30);
+//        validate_max_lengths($fields_with_max_lengths);
+
+    $user = array(
+        'name' => $_POST["username"],
+        'email' => $_POST["email"],
+        'password' => $_POST["password"],
+        'confirm_p' => $_POST["confirm_p"]
+    );
+
+    $sign_up_result = Server::sign_up($user);
+    if($sign_up_result == -1)
+        echo "<script type='text/javascript'>alert('Password mismatch!!!!')</script>";
+    else if($sign_up_result == -2){
+        echo "<script type='text/javascript'>alert('Name or email existed!!!!')</script>";
     }
+    else{
+        /* Redirect browser */
+        //echo "<script type='text/javascript'>alert('Sign up succeeded!!!!')</script>";
+
+        //header("Location: test.html");
+        $temp = "sign_in.php";
+
+        header("Location: " . $temp);
+        /* Make sure that code below does not get executed when we redirect. */
+
+        //echo "hello";
+        exit;
+    }
+}
 ?>
 <head>
     <title>Sign Up</title>
@@ -42,16 +71,15 @@
                 <h2>Username</h2>
                 <p> <input type="text" id="user" name="username" placeholder="Username" /> </p>
                 <h2>Password</h2>
-                <p><input type="email" id="email" name="email" placeholder="Password" /></p>
+                <p><input type="password" id="password" name="password" placeholder="Password" /></p>
 
                 <h2>Re-enter Password</h2>
-                <p><input type="email" id="email" name="email" placeholder="Confirm Password" /></p>
+                <p><input type="password" id="confirm_p" name="confirm_p" placeholder="Confirm Password" /></p>
                 <h2>Email</h2>
                 <p><input type="email" id="email" name="email" placeholder="Email" /></p>
 
-                <ul class="actions">
-                    <li><a href="test.html" class="button big special" name="submit" type="submit">Sign Up</a></li>
-                </ul>
+                <button class="button big special" name="submit" type="submit">Sign Up</button>
+
             </section>
         </form>
     </div>

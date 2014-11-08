@@ -43,30 +43,28 @@ class DB_manager
      */
     public function get_a_user ($var) {
         $name = $var['name'];
-        $user = new User();
+        $user = array();
 
         //use sql prepare to get user information from user table using
         //user's name
-        if ( $stmt = $this->db->prepare("SELECT email, password, create_date FROM user WHERE user.name = ?") ){
+        if ( $stmt = $this->db->prepare("SELECT password FROM user WHERE user.name = ?") ){
             $stmt->bind_param('s', $name);
             $stmt->execute();
-            $stmt->bind_result($email, $password, $create_date);
+            $stmt->bind_result($password);
             $stmt->fetch();
-            //set attributes to user
-            $user->set_attributes(
-                array(
-                    "name" => $name,
-                    "email" => $email,
-                    "password" => $password,
-                    "create_date" => $create_date
-                )
-            );
-            $stmt->close();
+
+            if ($password == NULL) {
+                $stmt->close();
+                return NULL;
+            } else {
+                $user['password'] = $password;
+                $stmt->close();
+                return $user;
+            }
         } else {
             echo "get_a_user: select statement went wrong";
             return false;
         }
-        return $user;
     }
 
     /**
@@ -87,6 +85,29 @@ class DB_manager
             echo "create_a_user: insert statement went wrong";
         }
         $stmt->close();
+    }
+
+    public function check_name_email_existed ($var) {
+        $name = $var['name'];
+        $email = $var['email'];
+
+        if ( $stmt = $this->db->prepare("SELECT name FROM user WHERE name = ? OR email = ?") ){
+            $stmt->bind_param('ss', $name, $email);
+            $stmt->execute();
+            $stmt->bind_result($n);
+            $stmt->fetch();
+
+            echo $n;
+            if ($n != NULL) {
+                return 1;
+            }
+
+        } else {
+            echo "check_name_email_existed: query statement went wrong";
+        }
+        $stmt->close();
+
+        return 0;
     }
 }
 ?>
