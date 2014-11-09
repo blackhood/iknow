@@ -59,7 +59,7 @@ if (isset($_POST['submit'])) {
                 <p> <input type="text" id="user" name="username" placeholder="Username" /> </p>
                 <h2>Password</h2>
                 <p><input type="password" id="password" name="password" placeholder="Password" /></p>
-                <button class="button big special" name="submit" type="submit">Sign Up</button>
+                <button class="button big special" name="submit" type="submit">Sign In</button>
             </section>
         </form>
     </div>

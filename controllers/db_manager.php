@@ -1,5 +1,6 @@
 <?php
 include '../models/user.php';
+include '../models/video.php';
 
 /**
  * Class DB_manager
@@ -109,5 +110,62 @@ class DB_manager
 
         return 0;
     }
+
+    public function get_videos_of_user ($var) {
+        $name = $var['name'];
+
+        if ( $stmt = $this->db->prepare("SELECT v.name, v.size, v.url, v.type, v.create_date, v.views, v.poster_url FROM
+            (video v INNER JOIN user u ON u.user_id = v.user_id )
+            WHERE u.name = ?") )
+        {
+
+            $stmt->bind_param('s', $name);
+            $stmt->execute();
+            $stmt->bind_result($v_name, $size, $url, $type, $create_date, $views, $poster_url);
+
+            $videos = array();
+
+            while ($row = $stmt->fetch()) {
+                $video = new Video();
+
+                $var = array(
+                    "name" => $v_name,
+                    "size" => $size,
+                    "url" => $url,
+                    "type" => $type,
+                    "creator" => $name,
+                    "create_date" => $create_date,
+                    "views" => $views,
+                    "poster_url" => $poster_url
+                );
+
+                $video->set_attributes($var);
+
+                array_push($videos, $video);
+
+//                echo ("inside");
+//                echo $v_name;
+//                echo $size;
+//                echo $url;
+//                echo $type;
+//                echo $create_date;
+//                echo $views;
+//                echo $poster_url;
+            }
+
+            if (sizeof($videos) == 0) {
+                return false;
+            }
+            else {
+                return $videos;
+            }
+
+        } else {
+            echo "check_name_email_existed: query statement went wrong";
+        }
+        $stmt->close();
+        return 0;
+    }
+
 }
 ?>
