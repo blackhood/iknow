@@ -167,5 +167,104 @@ class DB_manager
         return 0;
     }
 
+    public function upload_video ($user_name, $video) {
+
+        // Bucket Name
+        $bucket="iknow-video-sources";
+        if (!class_exists('S3'))require_once('../library/S3.php');
+
+        //AWS access info
+        if (!defined('awsAccessKey')) define('awsAccessKey', 'AKIAIRZINNE5XDLYDS3A');
+        if (!defined('awsSecretKey')) define('awsSecretKey', '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');
+        $s3 = new S3(awsAccessKey, awsSecretKey);
+
+        //Here you can add valid file extensions.
+        $valid_formats = array("txt", "jpg", "png", "gif", "bmp","jpeg","PNG","JPG","JPEG","GIF","BMP","mp4");
+
+        //upload video on s3
+        $name = $video['name'];
+        $size = $video['size'];
+        $tmp = $video['tmp_name'];
+        $ext = $this -> getExtension($name);
+        $create_date = date("Y-m-d");
+
+        if(strlen($name) > 0)
+        {
+            // File format validation
+            if(in_array($ext,$valid_formats))
+            {
+                // File size validation
+                if($size<(1024*1024))
+                {
+                    //Rename image name.
+                    $actual_image_name = time().".".$ext;
+                    $folder_name = "newfolder2/";
+
+                    if($s3->putObjectFile($tmp, $bucket , $folder_name.$actual_image_name, S3::ACL_PUBLIC_READ) )
+                    {
+                        $msg = "S3 Upload Successful.";
+                        https://s3-us-west-2.amazonaws.com/iknow-video-sources/newfolder2/1415652709.mp4
+                        $url='http://s3-us-west-2.amazonaws.com/'.$bucket.'/'.$folder_name .$actual_image_name;
+                    }
+                    else
+                        $msg = "S3 Upload Fail.";
+                }
+                else
+                    $msg = "Image size Max 1 MB";
+            }
+            else
+                $msg = "Invalid file, please upload image file.";
+        }
+        else
+            $msg = "Please select image file.";
+
+
+        //get user id by user name
+        if ( $stmt = $this->db->prepare("SELECT user_id FROM user WHERE user.name = ?") ){
+            $stmt->bind_param('s', $user_name);
+            $stmt->execute();
+            $stmt->bind_result($user_id);
+            $stmt->fetch();
+        }
+
+        $stmt->close();
+
+        $poster_url = "https://s3-us-west-2.amazonaws.com/iknow-video-sources/quick-time/Screen+Shot+2014-11-09+at+8.22.55+PM.png";
+
+
+        //update mysql
+        //insert into video table
+        $views = 0;
+        if ( $stmt = $this->db->prepare("INSERT INTO video ( name, size, url, type, user_id, create_date, poster_url) VALUES ( ?, ?, ?, ?,?, ?, ?)") ){
+            $stmt->bind_param('sdssdss', $name, $size, $url, $ext, $user_id, $create_date, $poster_url);
+            $stmt->execute();
+        } else {
+            echo "upload video: insert statement went wrong";
+        }
+
+        $video_id = $this->db->insert_id;
+
+        //insert video id and user_table
+        if ( $stmt = $this->db->prepare("INSERT INTO user_to_video (user_id, video_id) VALUES (?, ?)") )
+        {
+            $stmt->bind_param('ii', $user_id, $video_id);
+            $stmt->execute();
+        } else {
+            echo "upload video: insert statement went wrong";
+        }
+        $stmt->close();
+
+        return true;
+    }
+
+    public function getExtension($str)
+    {
+        $i = strrpos($str,".");
+        if (!$i) { return ""; }
+        $l = strlen($str) - $i;
+        $ext = substr($str,$i+1,$l);
+        return $ext;
+    }
+
 }
 ?>

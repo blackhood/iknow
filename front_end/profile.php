@@ -1,19 +1,28 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <?php
-    include '../views/display.php';
-?><!--
-Design by TEMPLATED
-http://templated.co
-Released for free under the Creative Commons Attribution License
+session_start();
+$user_name = $_SESSION['username'];
 
-Name       : Skeleton 
-Description: A two-column, fixed-width design with dark color scheme.
-Version    : 1.0
-Released   : 20130902
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php require_once '../views/display.php';?>
 
--->
 <html xmlns="http://www.w3.org/1999/xhtml">
+
+
+<?php
+require_once('../controllers/server.php');
+if($_SERVER['REQUEST_METHOD'] == "POST")
+{
+    $video = $_FILES['file'];
+    $result = Server::upload_video($user_name, $video);
+    if($result){
+//        echo 'Video upload succeed!';
+    }
+    else{
+        echo 'Video upload failed!';
+    }
+}
+?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title></title>
@@ -25,14 +34,15 @@ Released   : 20130902
 
 <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
 
+
 </head>
 <body>
 <div id="page" class="container">
 	<div id="header">
 		<div id="logo">
 			<img src="images/pic02.jpg" alt="" />
-			<h1><a href="#">Privy</a></h1>
-			<span>Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a></span>
+			<h1><a href="#"><?php echo $user_name; ?></a></h1>
+			<span>Design by <a href="http://templated.co" rel="nofollow">CS242</a></span>
 			<br/>
 			<span>Gender</span>
 		</div>
@@ -65,6 +75,19 @@ Released   : 20130902
 				<h2>Recent Uploads</h2>
 				<span class="byline">Please subscript if you like</span>
 			</div>
+
+<!--            <form action="" method="post" enctype="multipart/form-data">-->
+<!--                <input type="file" name="fileToUpload" id="fileToUpload">-->
+<!--                <input id = "myButton" type="submit" value="Upload Video">-->
+<!--            </form>-->
+
+            <form action="profile.php" method='post' enctype="multipart/form-data">
+                Upload video file here
+                <input type='file' name='file'/>
+                <input id = "myButton" type='submit' value='Upload Video'/>
+<!--                --><?php //echo $msg; ?>
+            </form>
+
 			<ul class="style1">
 				<!--<li class="first">-->
 					<!--<p class="date"><a href="#">Jan<b>05</b></a></p>-->

@@ -1,5 +1,5 @@
 <?php
-include 'db_manager.php';
+require_once 'db_manager.php';
 
 define ('DIFF_PASS', -1);
 define ('NAME_EMAIL_EXISTED', -2);
@@ -105,6 +105,12 @@ class Server
         }
     }
 
+
+    public static function upload_video($user_name, $video){
+        $db = new DB_manager();
+        $result = $db -> upload_video($user_name, $video);
+        return $result;
+    }
 }
 
 ?>

@@ -1,3 +1,8 @@
+<?php
+session_start();
+$_SESSION['username'] = null;
+
+?>
 <!DOCTYPE HTML>
 <html>
 <?php
@@ -16,7 +21,8 @@ if (isset($_POST['submit'])) {
 
     if($sign_in_result == true){
         echo "<script type='text/javascript'>alert('Sign in succeed!!!!')</script>";
-        header("Location: test.html");
+        $_SESSION['username'] = $name;
+        header("Location: profile.php");
     }
     else{
         echo "<script type='text/javascript'>alert('Sign in failed!!!!')</script>";

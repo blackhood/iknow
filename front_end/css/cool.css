@@ -11,11 +11,11 @@
 }
 
 #myButton {
-    background-color:#44c767;
+    background-color:#0F7DD6;
     -moz-border-radius:28px;
     -webkit-border-radius:28px;
     border-radius:28px;
-    border:1px solid #18ab29;
+    border:1px solid #0F7DD6;
     display:inline-block;
     cursor:pointer;
     color:#ffffff;
