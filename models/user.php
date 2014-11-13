@@ -43,8 +43,6 @@ Class User {
             $this->email = $attributes['email'];
             $this->password = $attributes['password'];
             $this->create_date = $attributes['create_date'];
-            //$this->image = $attributes['image'];
-            //$this->videos = $attributes['videos'];
             return true;
         }
         else{
@@ -54,7 +52,7 @@ Class User {
     }
 
     /**
-     * @return mixed
+     * @return create date
      */
     public function getCreateDate()
     {
@@ -62,7 +60,8 @@ Class User {
     }
 
     /**
-     * @param mixed $create_date
+     * @param string $create_date
+     * set create date
      */
     public function setCreateDate($create_date)
     {
@@ -70,7 +69,7 @@ Class User {
     }
 
     /**
-     * @return mixed
+     * @return string email
      */
     public function getEmail()
     {
@@ -78,31 +77,16 @@ Class User {
     }
 
     /**
-     * @param mixed $email
+     * @param set $email
      */
     public function setEmail($email)
     {
         $this->email = $email;
     }
 
-//    /**
-//     * @return mixed
-//     */
-//    public function getImage()
-//    {
-//        return $this->image;
-//    }
-//
-//    /**
-//     * @param mixed $image
-//     */
-//    public function setImage($image)
-//    {
-//        $this->image = $image;
-//    }
 
     /**
-     * @return mixed
+     * @return string name
      */
     public function getName()
     {
@@ -110,7 +94,7 @@ Class User {
     }
 
     /**
-     * @param mixed $name
+     * @param set string name
      */
     public function setName($name)
     {
@@ -118,7 +102,7 @@ Class User {
     }
 
     /**
-     * @return mixed
+     * @return get password
      */
     public function getPassword()
     {
@@ -126,27 +110,12 @@ Class User {
     }
 
     /**
-     * @param mixed $password
+     * @param set password
      */
     public function setPassword($password)
     {
         $this->password = $password;
     }
 
-//    /**
-//     * @return mixed
-//     */
-//    public function getVideos()
-//    {
-//        return $this->videos;
-//    }
-//
-//    /**
-//     * @param mixed $videos
-//     */
-//    public function setVideos($videos)
-//    {
-//        $this->videos = $videos;
-//    }
 }
 ?>

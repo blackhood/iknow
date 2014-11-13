@@ -1,8 +1,16 @@
 <?php
-//include('../models/video.php');
 include('../controllers/db_manager.php');
+
+/**
+ * Class Display
+ */
 Class Display
 {
+    /**
+     * @param $user_name string - user name for this profile
+     * generate front end html code based on user name.
+     * displayed on front_end/profile.php
+     */
     public static function show_videos_in_profile($user_name){
         $db_manager = new DB_manager();
         $var = array(
@@ -37,13 +45,33 @@ Class Display
                     </video>
                  </li>
             ';
-
         }
-
     }
 
+    /**
+     * @param $user_name string - user name of the this subscription
+     * generate front end html for a list of subscripted user names
+     * displayed in front_end/subscription.php
+     */
+    public static function show_user_subscription($user_name){
+        $db_manager = new DB_manager();
+        $var = array(
+            "name" => $user_name
+        );
 
-
+        $subscriptions = $db_manager -> get_subscription($var);
+        if($subscriptions == false){
+            echo 'you are not subscripted to anyone yet.';
+            return;
+        }
+        foreach($subscriptions as $subscription){
+            echo '
+                 <li>
+					<h3><a href="#">' . $subscription .'</a></h3>
+                 </li>
+            ';
+        }
+    }
 }
 
 ?>
